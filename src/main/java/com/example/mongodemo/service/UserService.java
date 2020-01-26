@@ -36,7 +36,7 @@ public class UserService {
     }
 
     public List<User> findUserByStreet(String street) {
-        Aggregation agg = newAggregation(
+        /*Aggregation agg = newAggregation(
                 unwind("addresses"),
                 match(Criteria.where("addresses.street").is(street)),
                 project("firstName").and("lastName").previousOperation()
@@ -44,7 +44,8 @@ public class UserService {
                 .excludeCase())).build());
         AggregationResults<User> groupResults
                 = mongoTemplate.aggregate(agg, User.COLLECTION_NAME, User.class);
-        return groupResults.getMappedResults();
+        return groupResults.getMappedResults();*/
+        return userRepository.findByAddressesStreet(street);
     }
 
     public List<User> getAllUsers() {
