@@ -63,6 +63,15 @@ public class UserServiceTest {
                 "Can't search user with street");
     }
 
+    @Test
+    @DisplayName("Find user by user's address's street with mongotemplate")
+    void testFindByStreetMT() {
+        Assert.notEmpty(userService.findUserByStreetMT("my street"),
+                "Can't search user with street");
+        Assert.notEmpty(userService.findUserByStreetMT("MY STREET"),
+                "Can't search user with street");
+    }
+
     @AfterAll
     void cleanUp() {
         userRepository.deleteAll();

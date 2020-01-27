@@ -10,11 +10,15 @@ import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Collation;
 import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.data.mongodb.core.aggregation.Aggregation.*;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 /**
  * Created by mayank on 24/01/20
@@ -46,6 +50,13 @@ public class UserService {
                 = mongoTemplate.aggregate(agg, User.COLLECTION_NAME, User.class);
         return groupResults.getMappedResults();*/
         return userRepository.findByAddressesStreet(street);
+    }
+
+    public List<User> findUserByStreetMT(String street) {
+        final Query query = new Query();
+        query.addCriteria(where("addresses").elemMatch(
+                where("street").is(street)));
+        return mongoTemplate.find(query, User.class);
     }
 
     public List<User> getAllUsers() {
